@@ -2,9 +2,9 @@ import { pool } from './db.js';
 
 async function runSeed() {
   try {
-      const categories = [
-      'Food/Drinks', 'Shopping', 'Entertainment', 'Rent', 
-      'Water Bill', 'Electricity Bill', 'Health', 'Sports', 
+    const categories = [
+      'Food/Drinks', 'Shopping', 'Entertainment', 'Rent',
+      'Water Bill', 'Electricity Bill', 'Health', 'Sports',
       'Pets', 'Travel', 'Tax', 'Salary', 'Odd Jobs', 'Pension'
     ];
 
@@ -14,7 +14,7 @@ async function runSeed() {
         [category]
       );
     }
-      console.log("Categories seeded successfully!");
+    console.log("Categories seeded successfully!");
   } catch (err) {
     console.error("Seed error:", err);
   } finally {
