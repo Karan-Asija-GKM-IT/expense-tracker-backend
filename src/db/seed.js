@@ -14,12 +14,22 @@ async function runSeed() {
         [category]
       );
     }
-    console.log("Categories seeded successfully!");
+    console.log("Seed UP completed!");
   } catch (err) {
-    console.error("Seed error:", err);
+    console.error("Seed UP error:", err);
   } finally {
     await pool.end();
   }
 }
 
-runSeed();
+export async function unseed() {
+  try {
+    await pool.query("DELETE FROM categories WHERE name IN ('Food/Drinks', 'Shopping', 'Entertainment', 'Rent', 'Water Bill', 'Electricity Bill', 'Health', 'Sports', 'Pets', 'Travel', 'Tax', 'Salary', 'Odd Jobs', 'Pension');");
+
+    console.log("Seed DOWN completed!");
+  } catch (err) {
+    console.error("Seed DOWN error:", err);
+  } finally {
+    await pool.end();
+  }
+}

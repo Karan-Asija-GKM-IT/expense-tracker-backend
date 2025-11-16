@@ -1,6 +1,6 @@
 import { pool } from './db.js';
 
-async function runMigrations() {
+async function up() {
     try {
         // USERS table
         await pool.query(`
@@ -38,11 +38,25 @@ async function runMigrations() {
         deleted_at TIMESTAMP
       );
     `);
-        console.log("Migrations completed!");
+        console.log("Migrations UP completed!");
     } catch (err) {
-        console.error("Migration error:", err);
+        console.error("Migration UP error:", err);
     } finally {
         await pool.end();
     }
 }
-runMigrations();
+
+export async function down() {
+  try {
+    
+    await pool.query('DROP TABLE IF EXISTS transactions;');
+    await pool.query('DROP TABLE IF EXISTS categories;');
+    await pool.query('DROP TABLE IF EXISTS users;');
+
+    console.log("Migrations DOWN completed!");
+  } catch (err) {
+    console.error("Migration DOWN error:", err);
+  } finally {
+    await pool.end(); //End connection
+  }
+}
