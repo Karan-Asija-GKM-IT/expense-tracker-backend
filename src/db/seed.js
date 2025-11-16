@@ -1,6 +1,6 @@
 import { pool } from './db.js';
 
-async function runSeed() {
+export async function seed() {
   try {
     const categories = [
       'Food/Drinks', 'Shopping', 'Entertainment', 'Rent',

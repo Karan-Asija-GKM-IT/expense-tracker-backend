@@ -1,6 +1,6 @@
 import { pool } from './db.js';
 
-async function up() {
+export async function up() {
     try {
         // USERS table
         await pool.query(`
