@@ -5,7 +5,12 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "migrate:up": "node src/db/run.js migrate:up",
+    "migrate:down": "node src/db/run.js migrate:down",
+    "seed:up": "node src/db/run.js seed:up",
+    "seed:down": "node src/db/run.js seed:down"
+
   },
   "keywords": [],
   "author": "",
