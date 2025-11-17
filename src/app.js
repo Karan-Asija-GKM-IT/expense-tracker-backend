@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.route.js';
-import categoryRoutes from './routes/category.route.js'
+import categoryRoutes from './routes/category.route.js';
+import transactionRoutes from './routes/transaction.route.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cookieParser);
 
 app.use('/api/auth',authRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 app.get('/', (req, res) => {
     res.send('Expense Tracker API is running...');
