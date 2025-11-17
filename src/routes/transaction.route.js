@@ -1,5 +1,5 @@
 import express from "express";
-import { protect } from "../middleware/auth.js";
+import { protectRoutes } from "../middleware/auth.js";
 
 import {
   addTransaction,
@@ -13,7 +13,7 @@ import {
 const router = express.Router();
 
 
-router.get('/', protect, getAllTransactions)
+router.get('/', protectRoutes, getAllTransactions)
 router.get('/filter', protect, filterTransactions)
 router.get('/:id', protect, getSingleTransaction)
 router.post('/', protect, addTransaction);

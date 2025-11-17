@@ -5,6 +5,6 @@ import { protect } from "../middleware/auth.js";
 const router = express.Router();
 
 // Protected because only logged-in users should fetch categories
-router.get("/", protect, getAllCategories);
+router.get("/", protectRoutes, getAllCategories);
 
 export default router;
