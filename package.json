@@ -4,13 +4,14 @@
   "description": "Express-based backend API for the Personal Expense Tracker application.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js",
     "migrate:up": "node src/db/run.js migrate:up",
     "migrate:down": "node src/db/run.js migrate:down",
     "seed:up": "node src/db/run.js seed:up",
-    "seed:down": "node src/db/run.js seed:down"
-
+    "seed:down": "node src/db/run.js seed:down",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:watch": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,15 @@
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "@eslint/eslintrc": "^3.3.1",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5"
   }
 }
