@@ -1,4 +1,4 @@
-import { registerService, loginService } from "../services/auth.service.js";
+import { registerService, loginService} from "../services/auth.service.js";
 
 export const cookieOptions = {
     httpOnly: true,
@@ -20,7 +20,7 @@ export const register = async (req, res) => {
             data: user,
         });
     } catch (err) {
-        return res.status(400).json({ message: err.message });
+        return res.status(404).json({ message: err.message });
     }
 };
 
@@ -43,6 +43,6 @@ export const login = async (req, res) => {
             data: user,
         });
     } catch (err) {
-        return res.status(400).json({ message: err.message });
+        return res.status(404).json({ message: err.message });
     }
 };

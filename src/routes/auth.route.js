@@ -1,5 +1,6 @@
 import express from 'express';
 import { register, login, cookieOptions } from '../controllers/auth.controller.js';
+import { protectRoutes } from '../middlewares/auth.js'
 
 const router = express.Router();
 
@@ -10,5 +11,6 @@ router.post('/logout', (req, res) => {
     res.clearCookie('token', cookieOptions);
     return res.json({ message: "Logged out successfully" });
 });
+
 
 export default router;

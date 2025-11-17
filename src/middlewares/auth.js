@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const protect = async (req,res,next) => {
+export const protectRoutes = async (req,res,next) => {
     try{
         let token = req.cookies.token;
       
@@ -14,8 +14,8 @@ export const protect = async (req,res,next) => {
             return res.status(401).json({ message: 'Not authorized, no token'});
         }
         //Decode token
-        const decode = jwt.verify(token, process.env.JWT_SECRET);
-        req.user=decode; 
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user=decoded; 
         next();
     }catch(err){
         console.error(err);
