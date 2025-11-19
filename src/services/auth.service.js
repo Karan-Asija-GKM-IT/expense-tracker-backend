@@ -2,7 +2,13 @@ import { pool } from "../db/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const registerService = async (username, email, password) => {
+
+export const registerUser = async (username, email, password) => {
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        throw new Error("Invalid email format");
+    }
 
     const existingUser = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -13,12 +19,17 @@ export const registerService = async (username, email, password) => {
     //Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await pool.query("INSERT INTO users (username, email, password, created_at, updated_at) VALUES ($1, $2, $3, NOW(), NOW()) RETURNING id, username, email", [username, email, hashedPassword]);
+    if (!result || !result.rows || result.rows.length === 0) {
+        console.error('INSERT returned no rows', { username, email, result });
+        return null;
+    }
 
+    console.log('User created:', result.rows[0]);
     return result.rows[0];
 };
 
 
-export const loginService = async (email, password) => {
+export const loginUser = async (email, password) => {
   
     const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -27,13 +38,13 @@ export const loginService = async (email, password) => {
     }
     const dbUser = user.rows[0];
 
-    // Compare password
+  
     const isMatch = await bcrypt.compare(password, dbUser.password);
     if (!isMatch) {
         throw new Error("Invalid credentials");
     }
 
-    //Generate JWT
+    
     const token = jwt.sign(
         { id: dbUser.id, email: dbUser.email },
         process.env.JWT_SECRET,
@@ -48,5 +59,9 @@ export const loginService = async (email, password) => {
             email: dbUser.email,
         },
     };
+};
+export const logoutUser = async (req) => {
+
+    return { message: "Logged out successfully" };
 };
 
