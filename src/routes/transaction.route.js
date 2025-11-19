@@ -14,10 +14,10 @@ const router = express.Router();
 
 
 router.get('/', protectRoutes, getAllTransactions)
-router.get('/filter', protect, filterTransactions)
-router.get('/:id', protect, getSingleTransaction)
-router.post('/', protect, addTransaction);
-router.put('/:id', protect, updateTransaction);
-router.delete('/:id', protect, deleteTransaction);
+router.get('/filter', protectRoutes, filterTransactions)
+router.get('/:id', protectRoutes, getSingleTransaction)
+router.post('/', protectRoutes, addTransaction);
+router.put('/:id', protectRoutes, updateTransaction);
+router.delete('/:id', protectRoutes, deleteTransaction);
 
 export default router;
