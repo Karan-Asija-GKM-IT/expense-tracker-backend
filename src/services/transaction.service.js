@@ -1,6 +1,6 @@
 import { pool } from "../db/db.js";
 
-export const createTransactionService = async (data) => {
+export const addSingleTransaction = async (data) => {
   const {userId, categoryId, amount, isIncome, description, date} = data;
 
   const result = await pool.query(
@@ -10,19 +10,19 @@ export const createTransactionService = async (data) => {
   return result.rows[0];
 };
 
-export const getTransactionsService = async (userId) => {
+export const getTransactions = async (userId) => {
   const result = await pool.query('SELECT * FROM transactions WHERE user_id = $1 ORDER BY date_of_transaction DESC',[userId]);
 
   return result.rows;
 };
 
-export const getTransactionByIdService = async (id, userId) => {
+export const getTransactionById = async (id, userId) => {
   const result = await pool.query('SELECT * FROM transactions WHERE id = $1 AND user_id = $2', [id, userId]);
 
   return result.rows[0];
 };
 
-export const updateTransactionService = async (id, userId, data) => {
+export const updateTransactionById = async (id, userId, data) => {
   const { categoryId, amount, isIncome, description, date } = data;
 
   const result = await pool.query(
@@ -40,7 +40,7 @@ export const updateTransactionService = async (id, userId, data) => {
   return result.rows[0];
 };
 
-export const deleteTransactionService = async (id, userId) => {
+export const deleteTransactionById = async (id, userId) => {
   const result = await pool.query(
     `DELETE FROM transactions 
      WHERE id = $1 AND user_id = $2
@@ -51,7 +51,7 @@ export const deleteTransactionService = async (id, userId) => {
   return result.rows[0];
 };
 
-export const filterTransactionsService = async (
+export const filterByTransactions = async (
   userId,
   startDate,
   endDate

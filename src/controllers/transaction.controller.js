@@ -1,10 +1,10 @@
 import {
-  createTransactionService,
-  getTransactionsService,
-  getTransactionByIdService,
-  updateTransactionService,
-  deleteTransactionService,
-  filterTransactionsService
+  addSingleTransaction,
+  getTransactions,
+  getTransactionById,
+  updateTransactionById,
+  deleteTransactionById,
+  filterByTransactions
 } from "../services/transaction.service.js";
 
 
@@ -17,7 +17,7 @@ export const addTransaction = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const transaction = await createTransactionService({
+    const transaction = await addSingleTransaction({
       userId: req.user.id,
       categoryId: category_id,
       amount: amount,
@@ -36,7 +36,9 @@ export const addTransaction = async (req, res) => {
 
 export const getAllTransactions = async (req, res) => {
   try {
-    const transactions = await getTransactionsService(req.user.id);
+    const queryUserId = req.query.userId;
+    const userIdToUse = queryUserId && String(queryUserId) === String(req.user.id) ? queryUserId : req.user.id;
+    const transactions = await getTransactions(userIdToUse);
     res.json(transactions);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch transactions" });
@@ -45,7 +47,7 @@ export const getAllTransactions = async (req, res) => {
 
 export const getSingleTransaction = async (req, res) => {
   try {
-    const transaction = await getTransactionByIdService(req.params.id, req.user.id);
+    const transaction = await getTransactionById(req.params.id, req.user.id);
 
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });
@@ -59,13 +61,13 @@ export const getSingleTransaction = async (req, res) => {
 
 
 
-export const updateTransactionById = async (req, res) => {
+export const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
 
     const { category_id, amount, is_income, description, date_of_transaction } = req.body;
 
-    const updated = await updateTransactionService(id, req.user.id, {
+    const updated = await updateTransactionById(id, req.user.id, {
       categoryId: category_id,
       amount,
       isIncome: is_income,
@@ -84,11 +86,11 @@ export const updateTransactionById = async (req, res) => {
   }
 };
 
-export const deleteTransactionById = async (req, res) => {
+export const deleteTransaction = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await deleteTransactionService(id, req.user.id);
+    const deleted = await deleteTransactionById(id, req.user.id);
 
     if (!deleted) {
       return res.status(404).json({ message: "Transaction not found" });
@@ -112,7 +114,7 @@ export const filterTransactions = async (req, res) => {
       });
     }
 
-    const transactions = await filterTransactionsService(
+    const transactions = await filterByTransactions(
       userId,
       startDate,
       endDate

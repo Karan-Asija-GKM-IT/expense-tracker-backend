@@ -5,8 +5,8 @@ import {
   addTransaction,
   getAllTransactions,
   getSingleTransaction,
-  updateTransactionById,
-  deleteTransactionById,
+  updateTransaction,
+  deleteTransaction,
   filterTransactions
 } from "../controllers/transaction.controller.js";
 
@@ -17,7 +17,7 @@ router.get('/', protectRoutes, getAllTransactions)
 router.get('/filter', protect, filterTransactions)
 router.get('/:id', protect, getSingleTransaction)
 router.post('/', protect, addTransaction);
-router.put('/:id', protect, updateTransactionById);
-router.delete('/:id', protect, deleteTransactionById);
+router.put('/:id', protect, updateTransaction);
+router.delete('/:id', protect, deleteTransaction);
 
 export default router;
