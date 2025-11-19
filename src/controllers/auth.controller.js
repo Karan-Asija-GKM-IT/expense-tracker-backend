@@ -1,4 +1,4 @@
-import { registerService, loginService} from "../services/auth.service.js";
+import { registerUser, loginUser, logoutUser} from "../services/auth.service.js";
 
 export const cookieOptions = {
     httpOnly: true,
@@ -14,7 +14,7 @@ export const register = async (req, res) => {
     }
 
     try {
-        const user = await registerService(username, email, password);
+        const user = await registerUser(username, email, password);
         return res.status(201).json({
             message: "User registered successfully",
             data: user,
@@ -33,7 +33,7 @@ export const login = async (req, res) => {
     }
 
     try {
-        const { token, user } = await loginService(email, password);
+        const { token, user } = await loginUser(email, password);
 
         res.cookie("token", token, cookieOptions);
 
@@ -44,5 +44,16 @@ export const login = async (req, res) => {
         });
     } catch (err) {
         return res.status(404).json({ message: err.message });
+    }
+};
+
+export const logout = async (req, res) => {
+    try {
+        const result = await logoutUser(req);  // <- service handles logic
+        res.clearCookie("token", cookieOptions);
+
+        return res.json({ message: result.message });
+    } catch (err) {
+        return res.status(500).json({ message: "Failed to logout" });
     }
 };
