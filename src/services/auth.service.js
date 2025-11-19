@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (username, email, password) => {
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        throw new Error("Invalid email format");
+    }
     const existingUser = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
     if (existingUser.rows.length > 0) {

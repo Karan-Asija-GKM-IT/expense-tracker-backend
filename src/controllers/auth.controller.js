@@ -20,7 +20,7 @@ export const register = async (req, res) => {
             data: user,
         });
     } catch (err) {
-        return res.status(404).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 };
 
@@ -49,7 +49,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        const result = await logoutUser(req);  // <- service handles logic
+        const result = await logoutUser(req);  
         res.clearCookie("token", cookieOptions);
 
         return res.json({ message: result.message });
