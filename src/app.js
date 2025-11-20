@@ -11,9 +11,12 @@ const app = express();
 
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 app.use(express.json());
-app.use(cookieParser);
+app.use(cookieParser());
 
 app.use('/api/auth',authRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -24,7 +27,7 @@ app.get('/', (req, res) => {
     res.send('Expense Tracker API is running...');
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}...`);
 })
