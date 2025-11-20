@@ -2,12 +2,14 @@ import { registerUser, loginUser, logoutUser } from "../services/auth.service.js
 
 export const cookieOptions = {
     httpOnly: true,
-    sameSite: "Strict",
+    sameSite: "none",
+    secure: true,
     maxAge: 30 * 24 * 60 * 60 * 1000, 
 };
 export const clearCookieOptions = {
   httpOnly: true,
-  sameSite: "Strict",
+  sameSite: "none",
+    secure: true,
   maxAge: 0,
 };
 
