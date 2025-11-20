@@ -8,7 +8,7 @@ import {
 } from "../services/transaction.service.js";
 
 
-
+// ADD TRANSACTION
 export const addTransaction = async (req, res) => {
   try {
     const { category_id, amount, is_income, description, date_of_transaction } = req.body;
@@ -20,31 +20,40 @@ export const addTransaction = async (req, res) => {
     const transaction = await addSingleTransaction({
       userId: req.user.id,
       categoryId: category_id,
-      amount: amount,
+      amount,
       isIncome: is_income,
-      description: description,
+      description,
       date: date_of_transaction || new Date(),
     });
 
-    res.status(201).json(transaction);
+    return res.status(201).json(transaction);
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to add transaction" });
+    return res.status(500).json({ message: err.message || "Failed to add transaction" });
   }
 };
 
 
+// GET ALL TRANSACTIONS
 export const getAllTransactions = async (req, res) => {
   try {
     const queryUserId = req.query.userId;
-    const userIdToUse = queryUserId && String(queryUserId) === String(req.user.id) ? queryUserId : req.user.id;
+    const userIdToUse =
+      queryUserId && String(queryUserId) === String(req.user.id)
+        ? queryUserId
+        : req.user.id;
+
     const transactions = await getTransactions(userIdToUse);
-    res.json(transactions);
+    return res.status(200).json(transactions);
+
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch transactions" });
+    return res.status(500).json({ message: err.message || "Failed to fetch transactions" });
   }
 };
 
+
+// GET SINGLE TRANSACTION
 export const getSingleTransaction = async (req, res) => {
   try {
     const transaction = await getTransactionById(req.params.id, req.user.id);
@@ -53,18 +62,18 @@ export const getSingleTransaction = async (req, res) => {
       return res.status(404).json({ message: "Transaction not found" });
     }
 
-    res.json(transaction);
+    return res.status(200).json(transaction);
+
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch transaction" });
+    return res.status(500).json({ message: err.message || "Failed to fetch transaction" });
   }
 };
 
 
-
+// UPDATE TRANSACTION
 export const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-
     const { category_id, amount, is_income, description, date_of_transaction } = req.body;
 
     const updated = await updateTransactionById(id, req.user.id, {
@@ -79,13 +88,16 @@ export const updateTransaction = async (req, res) => {
       return res.status(404).json({ message: "Transaction not found" });
     }
 
-    res.json(updated);
+    return res.status(200).json(updated);
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to update transaction" });
+    return res.status(500).json({ message: err.message || "Failed to update transaction" });
   }
 };
 
+
+// DELETE TRANSACTION
 export const deleteTransaction = async (req, res) => {
   try {
     const { id } = req.params;
@@ -96,13 +108,16 @@ export const deleteTransaction = async (req, res) => {
       return res.status(404).json({ message: "Transaction not found" });
     }
 
-    res.json({ message: "Transaction deleted successfully" });
+    return res.status(200).json({ message: "Transaction deleted successfully" });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to delete transaction" });
+    return res.status(500).json({ message: err.message || "Failed to delete transaction" });
   }
 };
 
+
+// FILTER TRANSACTIONS
 export const filterTransactions = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -114,19 +129,15 @@ export const filterTransactions = async (req, res) => {
       });
     }
 
-    const transactions = await filterByTransactions(
-      userId,
-      startDate,
-      endDate
-    );
+    const transactions = await filterByTransactions(userId, startDate, endDate);
 
-    res.status(200).json({
+    return res.status(200).json({
       count: transactions.length,
       transactions
     });
 
   } catch (error) {
     console.error("Error filtering transactions:", error);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: error.message || "Server error" });
   }
 };
