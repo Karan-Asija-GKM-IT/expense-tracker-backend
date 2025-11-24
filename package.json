@@ -10,8 +10,13 @@
     "seed:up": "node src/db/run.js seed:up",
     "seed:down": "node src/db/run.js seed:down",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "jest --watchAll"
+  },
+  "jest": {
+  "testEnvironment": "node",
+  "extensionsToTreatAsEsm": [".js"],
+  "transform": {}
   },
   "keywords": [],
   "author": "",
