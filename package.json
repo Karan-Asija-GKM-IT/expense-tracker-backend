@@ -15,7 +15,6 @@
   },
   "jest": {
   "testEnvironment": "node",
-  "extensionsToTreatAsEsm": [".js"],
   "transform": {}
   },
   "keywords": [],
